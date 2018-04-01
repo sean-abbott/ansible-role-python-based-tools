@@ -1,0 +1,33 @@
+---
+- name: "ensure pip and virtualenv are installed"
+  become: yes
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - python-pip
+    - python3-pip
+
+- name: "ensure pip andvirtualenv are upgraded"
+  become: yes
+  pip:
+    name: "pip"
+    state: "latest"
+
+- name: "check for pipsi"
+  stat:
+    path: "~/.local/bin/pipsi"
+  register: "haz_pipsi"
+
+- name: "debug haz_pipsi"
+  debug:
+    var: haz_pipsi
+    verbosity: 1
+
+- name: "get pipsi"
+  shell: "curl https://raw.githubusercontent.com/mitsuhiko/pipsi/master/get-pipsi.py | python2"
+  when: "not haz_pipsi.stat.exists"
+  warn: False
+
+- include_tasks: pipsi_install.yml
+  with_items: "{{ pipsi_tools_list }}"

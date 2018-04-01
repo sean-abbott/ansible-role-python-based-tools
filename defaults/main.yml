@@ -1,0 +1,8 @@
+---
+pipsi_tools_list:
+  - name: "awscli"
+    py: "python2"
+  - name: "xkcdpass"
+    py: "python3"
+  - name: "thefuck"
+    py: "python3"

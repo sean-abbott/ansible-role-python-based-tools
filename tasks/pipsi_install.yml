@@ -1,0 +1,9 @@
+---
+- name: "check for {{ item.name }}"
+  stat:
+    path: "~/.local/venvs/{{ item.name }}"
+  register: "haz_tool"
+
+- name: "pipsi install {{ item }}"
+  shell: "pipsi install --python={{ item.py }} {{ item.name }}"
+  when: "not haz_tool.stat.exists"
